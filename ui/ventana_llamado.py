@@ -10,12 +10,17 @@ class VentanaLlamado(tb.Toplevel):
         self.overrideredirect(True)
         self.configure(bg="#e6f2fa")
 
-        # --- Información inicial ---
-        self.numero = numero
-        self.nombre = nombre
-        self.hora = hora
-        self.profesional = profesional
+        # --- Inicializamos la cola con un solo llamado ---
+        self.cola = []
+        if numero != "__" or nombre or hora or profesional:
+            self.cola.append({
+                "numero": numero,
+                "nombre": nombre,
+                "hora": hora,
+                "profesional": profesional
+            })
 
+        # --- Canvas principal ---
         self.canvas = Canvas(self, bg="#e6f2fa", highlightthickness=0)
         self.canvas.pack(fill="both", expand=True)
 
@@ -26,13 +31,16 @@ class VentanaLlamado(tb.Toplevel):
 
         # --- Textos centrados ---
         self.numero_main = self.canvas.create_text(self.monitor.width//2, self.monitor.height//5,
-                                                   text=self.numero, font=("Helvetica", 80, "bold"), fill="#333")
+                                                   text="__", font=("Helvetica", 80, "bold"), fill="#333")
         self.nombre_main = self.canvas.create_text(self.monitor.width//2, self.monitor.height//5 + 150,
-                                                   text=self.nombre, font=("Helvetica", 40, "bold"), fill="#007BFF")
+                                                   text="", font=("Helvetica", 40, "bold"), fill="#007BFF")
         self.hora_main   = self.canvas.create_text(self.monitor.width//2, self.monitor.height//5 + 250,
-                                                   text=self.hora, font=("Helvetica", 30), fill="#333")
+                                                   text="", font=("Helvetica", 30), fill="#333")
         self.pro_main    = self.canvas.create_text(self.monitor.width//2, self.monitor.height//5 + 350,
-                                                   text=self.profesional, font=("Helvetica", 30), fill="#28a745")
+                                                   text="", font=("Helvetica", 30), fill="#28a745")
+
+        # --- Inicializamos pantalla con datos si hay ---
+        self.actualizar_pantalla()
 
     def obtener_segundo_monitor(self):
         monitores = screeninfo.get_monitors()
@@ -42,13 +50,20 @@ class VentanaLlamado(tb.Toplevel):
         else:
             return monitores[1]
 
-    def actualizar_llamado(self, numero="", nombre="", hora="", profesional=""):
-        if numero: self.numero = numero
-        if nombre: self.nombre = nombre
-        if hora: self.hora = hora
-        if profesional: self.profesional = profesional
+    def actualizar_llamado(self, numero="__", nombre="", hora="", profesional=""):
+        # Actualiza la cola con un solo llamado
+        self.cola = [{"numero": numero, "nombre": nombre, "hora": hora, "profesional": profesional}]
+        self.actualizar_pantalla()
 
-        self.canvas.itemconfig(self.numero_main, text=self.numero)
-        self.canvas.itemconfig(self.nombre_main, text=self.nombre)
-        self.canvas.itemconfig(self.hora_main, text=self.hora)
-        self.canvas.itemconfig(self.pro_main, text=self.profesional)
+    def actualizar_pantalla(self):
+        if len(self.cola) > 0:
+            p = self.cola[0]
+            self.canvas.itemconfig(self.numero_main, text=p["numero"])
+            self.canvas.itemconfig(self.nombre_main, text=p["nombre"])
+            self.canvas.itemconfig(self.hora_main,   text=p["hora"])
+            self.canvas.itemconfig(self.pro_main,    text=p["profesional"])
+        else:
+            self.canvas.itemconfig(self.numero_main, text="__")
+            self.canvas.itemconfig(self.nombre_main, text="")
+            self.canvas.itemconfig(self.hora_main,   text="")
+            self.canvas.itemconfig(self.pro_main,    text="")
