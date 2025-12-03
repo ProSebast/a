@@ -1,5 +1,6 @@
 import ttkbootstrap as tb
 from ui.ventana_llamado import VentanaLlamado
+from ui.ventana_llamado import VentanaLlamado
 
 
 contador_llamados = 0  # Contador global
