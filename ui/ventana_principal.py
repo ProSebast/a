@@ -1,43 +1,39 @@
 import ttkbootstrap as tb
+from tkinter import Label, Entry, Button
 from ui.ventana_llamado import VentanaLlamado
-from ui.panel_ingreso import PanelIngreso  # Solo se abrirá con botón
 
 class VentanaPrincipal(tb.Window):
     def __init__(self):
-        super().__init__(title="Sistema de Citas", themename="flatly")
-        self.geometry("900x600")
-        self._crear_widgets()
+        super().__init__(title="Ingreso de Datos", themename="flatly")
+        self.geometry("500x400")
 
-    def _crear_widgets(self):
-        titulo = tb.Label(self, text="Registro de Citas", font=("Arial", 20))
-        titulo.pack(pady=20)
+        Label(self, text="Número", font=("Arial", 14)).pack(pady=5)
+        self.entry_numero = Entry(self)
+        self.entry_numero.pack(pady=5)
 
-        # Botón: Abrir panel de ingreso
-        btn_ingreso = tb.Button(
-            self,
-            text="Abrir Panel de Ingreso",
-            bootstyle="primary",
-            command=self.abrir_panel_ingreso
-        )
-        btn_ingreso.pack(pady=10)
+        Label(self, text="Nombre", font=("Arial", 14)).pack(pady=5)
+        self.entry_nombre = Entry(self)
+        self.entry_nombre.pack(pady=5)
 
-        # Botón: Abrir ventana de llamado
-        btn_llamado = tb.Button(
-            self,
-            text="Abrir Ventana de Llamado",
-            bootstyle="success",
-            command=self.abrir_ventana_llamado
-        )
-        btn_llamado.pack(pady=10)
+        Label(self, text="Hora", font=("Arial", 14)).pack(pady=5)
+        self.entry_hora = Entry(self)
+        self.entry_hora.pack(pady=5)
 
-    def abrir_panel_ingreso(self):
-        # Solo se abre al presionar el botón
-        PanelIngreso(self)
+        Label(self, text="Profesional", font=("Arial", 14)).pack(pady=5)
+        self.entry_prof = Entry(self)
+        self.entry_prof.pack(pady=5)
 
-    def abrir_ventana_llamado(self):
-        # Ventana de llamado vacía por ahora
-        VentanaLlamado(self)
+        # Botón para llamar
+        Button(self, text="Llamar", command=self.abrir_llamado).pack(pady=20)
 
-if __name__ == "__main__":
-    app = VentanaPrincipal()
-    app.mainloop()
+        # Ventana de llamado inicial vacía
+        self.ventana_llamado = VentanaLlamado(self)
+
+    def abrir_llamado(self):
+        numero = self.entry_numero.get()
+        nombre = self.entry_nombre.get()
+        hora = self.entry_hora.get()
+        profesional = self.entry_prof.get()
+
+        # Actualiza la ventana de llamado
+        self.ventana_llamado.actualizar(numero, nombre, hora, profesional)
