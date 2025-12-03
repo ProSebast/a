@@ -1,6 +1,6 @@
 import ttkbootstrap as tb
 from ui.ventana_llamado import VentanaLlamado
-from ui.panel_ingreso import PanelIngreso  # <-- importar el panel
+from ui.panel_ingreso import PanelIngreso
 
 class VentanaPrincipal(tb.Window):
     def __init__(self):
@@ -12,33 +12,31 @@ class VentanaPrincipal(tb.Window):
         titulo = tb.Label(self, text="Registro de Citas", font=("Arial", 20))
         titulo.pack(pady=20)
 
-        # Botón 1: Mostrar en pantalla (HTML/HDMI/TV)
-        btn_html = tb.Button(
+        # Botón: Abrir panel de ingreso
+        btn_ingreso = tb.Button(
             self,
-            text="Mostrar en TV (HTML)",
+            text="Abrir Panel de Ingreso",
             bootstyle="primary",
             command=self.abrir_panel_ingreso
         )
-        btn_html.pack(pady=10)
+        btn_ingreso.pack(pady=10)
 
-        # Botón 2: Transmitir por Internet
-        btn_stream = tb.Button(
+        # Botón: Abrir ventana de llamado
+        btn_llamado = tb.Button(
             self,
-            text="Transmitir por Internet",
+            text="Abrir Ventana de Llamado",
             bootstyle="success",
-            command=self.transmitir_internet
+            command=self.abrir_ventana_llamado
         )
-        btn_stream.pack(pady=10)
+        btn_llamado.pack(pady=10)
 
-    # === FUNCIÓN 1: Abrir panel de ingreso de datos ===
     def abrir_panel_ingreso(self):
         PanelIngreso(self)
 
-    # === FUNCIÓN 2: Transmisión por Internet ===
-    def transmitir_internet(self):
-        print("Aquí luego transmitiremos por internet.")
-        # Aquí después armamos la transmisión (Flask + página web)
-
+    def abrir_ventana_llamado(self):
+        # Ventana de llamado vacía, sin fullscreen ni diseño
+        ventana = VentanaLlamado(self)
+        ventana.mostrar_sin_diseño()  # Método que implementaremos en ventana_llamado
 
 if __name__ == "__main__":
     app = VentanaPrincipal()
