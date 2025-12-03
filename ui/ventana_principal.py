@@ -30,8 +30,4 @@ class VentanaPrincipal(tb.Window):
         hora = self.entry_hora.get()
         profesional = self.entry_pro.get()
 
-        self.ventana_llamado.actualizar_llamado(
-            nombre=nombre,
-            hora=hora,
-            profesional=profesional
-        )
+        self.ventana_llamado.agregar_llamado(nombre=nombre, hora=hora, profesional=profesional)
