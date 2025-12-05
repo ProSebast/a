@@ -63,7 +63,8 @@ class VentanaPrincipal(tb.Window):
         self.pro_var.set("")
 
     def llamar(self, numero, nombre, hora, profesional, fila):
-        # Actualizar ventana de llamado
-        self.ventana_llamado.actualizar_llamado(numero, nombre, hora, profesional)
+        # Agregar paciente a la cola y guardar
+        self.ventana_llamado.agregar_a_cola(numero, nombre, hora, profesional)
+        self.ventana_llamado.llamar_siguiente()
         # Eliminar la fila de la lista
         fila.destroy()
