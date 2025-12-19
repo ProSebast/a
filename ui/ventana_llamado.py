@@ -21,7 +21,7 @@ class VentanaLlamado(tb.Toplevel):
                 writer.writeheader()
 
         # Cola de pacientes
-        self.cola = []
+        self.current = None
 
         # Canvas
         self.canvas = Canvas(self, bg="#e6f2fa", highlightthickness=0)
@@ -46,20 +46,20 @@ class VentanaLlamado(tb.Toplevel):
     # Agregar paciente a la cola
     # ================================
     def agregar_a_cola(self, numero, nombre, hora, profesional):
-        self.cola.append({
+        self.current = {
             "numero": numero,
             "nombre": nombre,
             "hora": hora,
             "profesional": profesional
-        })
+        }
         self.actualizar_llamado()
 
     # ================================
     # Mostrar paciente actual
     # ================================
     def actualizar_llamado(self):
-        if self.cola:
-            p = self.cola[0]
+        if self.current:
+            p = self.current
             self.canvas.itemconfig(self.numero_main, text=p["numero"])
             self.canvas.itemconfig(self.nombre_main, text=p["nombre"])
             self.canvas.itemconfig(self.hora_main, text=p["hora"])
@@ -74,9 +74,10 @@ class VentanaLlamado(tb.Toplevel):
     # Llamar siguiente paciente y guardar
     # ================================
     def llamar_siguiente(self):
-        if self.cola:
-            paciente = self.cola.pop(0)
+        if self.current:
+            paciente = self.current
             self.guardar_paciente(paciente)
+            self.current = None
         self.actualizar_llamado()
 
     # ================================
